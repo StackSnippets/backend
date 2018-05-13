@@ -8,7 +8,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "node test.js"
+    "test": "node test.js",
+    "precommit": "pretty-quick --staged"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -19,7 +20,10 @@
     "morgan": "^1.9.0"
   },
   "devDependencies": {
+    "husky": "^0.14.3",
     "nodemon": "^1.17.4",
+    "prettier": "^1.12.1",
+    "pretty-quick": "^1.4.1",
     "request": "^2.85.0",
     "tape": "^4.9.0"
   },
@@ -27,10 +31,6 @@
     "type": "git",
     "url": "https://github.com/heroku/node-js-getting-started"
   },
-  "keywords": [
-    "node",
-    "heroku",
-    "express"
-  ],
+  "keywords": ["node", "heroku", "express"],
   "license": "MIT"
 }
