@@ -1,14 +1,12 @@
-import express from "express";
-import compression from "compression";
-import helmet from "helmet";
-import session from "express-session";
-import { json } from "body-parser";
-import { load } from "dotenv";
-import path from "path";
-import logger from "morgan";
-import cors from "cors";
+const express = require("express");
+const compression = require("compression");
+const helmet = require("helmet");
+const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+const logger = require("morgan");
+const cors = require("cors");
 
-load({ path: ".env" });
+dotenv.load({ path: ".env" });
 
 const app = express();
 
@@ -17,7 +15,7 @@ app.use(logger("dev"));
 app.use(compression());
 app.use(helmet());
 
-app.use(json());
+app.use(bodyParser.json());
 app.use(cors());
 
 app.listen(app.get("port"), () => {
