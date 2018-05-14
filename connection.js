@@ -1,11 +1,13 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-function connect() {
-  const url = "mongodb://127.0.0.1/snippets";
-  mongoose.connect(url);
-  const db = mongoose.connection;
-  db.on("error", console.error.bind(console, "MongoDB connection error:"));
-  return db;
+class Database {
+  static connect() {
+    const url = "mongodb://127.0.0.1/snippets";
+    mongoose.connect(url);
+    const db = mongoose.connection;
+    db.on("error", console.error.bind(console, "MongoDB connection error:"));
+    return db;
+  }
 }
 
-export default connect;
+module.exports = Database;
