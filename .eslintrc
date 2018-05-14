@@ -11,7 +11,8 @@
   "rules": {
     "strict": 0,
     "space-infix-ops": 2,
-    "no-console": 0
+    "no-console": 0,
+    "no-unused-vars": 1
   },
   "globals": {}
 }
