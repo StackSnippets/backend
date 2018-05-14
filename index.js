@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const logger = require("morgan");
 const cors = require("cors");
+const Database = require("./connection");
 
 dotenv.load({ path: ".env" });
 
@@ -17,6 +18,8 @@ app.use(helmet());
 
 app.use(bodyParser.json());
 app.use(cors());
+
+Database.connect();
 
 app.listen(app.get("port"), () => {
   console.log(`App running on port ${app.get("port")}`);
