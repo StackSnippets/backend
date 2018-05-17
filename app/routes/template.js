@@ -1,7 +1,9 @@
 const express = require("express");
-const template = require("./template");
 
 const router = express.Router();
-router.use("/templates", template);
+
+router.get("/", function(req, res) {
+  res.send({ text: "template" });
+});
 
 module.exports = router;
