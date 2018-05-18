@@ -16,10 +16,6 @@ exports.updateTemplate = function(req, res) {
   res.send("Update Template");
 };
 
-exports.addToFavorites = function(req, res) {
+exports.updateFavorites = function(req, res) {
   res.send("Keep favorite count");
-};
-
-exports.deleteFromFavorites = function(req, res) {
-  res.send("Update favorite count");
 };
