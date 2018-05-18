@@ -1,11 +1,18 @@
 const Template = require("../models/template");
 
 exports.templatesList = function(req, res) {
-  res.send("Templates List");
+  Template.find({}, function(error, result) {
+    if (error) res.json({ error });
+    res.json({ success: result });
+  });
 };
 
 exports.templateDetail = function(req, res) {
-  res.send("Single Template");
+  const id = req.params.id;
+  Template.findOne({ _id: id }, function(error, result) {
+    if (error) res.json({ error });
+    res.json({ success: result });
+  });
 };
 
 exports.createTemplate = function(req, res) {
