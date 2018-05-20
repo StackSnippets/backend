@@ -1,4 +1,6 @@
 const Template = require("../models/template");
+const { body, validationResult } = require("express-validator/check");
+const { sanitizeBody } = require("express-validator/filter");
 
 exports.templatesList = function(req, res) {
   Template.find({}, function(error, result) {
@@ -15,13 +17,96 @@ exports.templateDetail = function(req, res) {
   });
 };
 
-exports.createTemplate = function(req, res) {
-  res.send("Create Template");
-};
+exports.createTemplate = [
+  body("name")
+    .isLength({ min: 3 })
+    .trim()
+    .withMessage("Name must have at least 3 characters.")
+    .isAlphanumeric()
+    .withMessage("Name has non-alphanumeric characters."),
+  body("description")
+    .optional()
+    .isLength({ min: 5 })
+    .trim()
+    .withMessage("Description must be specified.")
+    .isAlphanumeric()
+    .withMessage("Description has non-alphanumeric characters."),
+  sanitizeBody("code")
+    .trim()
+    .escape(),
+  sanitizeBody("name")
+    .trim()
+    .escape(),
+  sanitizeBody("description")
+    .trim()
+    .escape(),
+  function(req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const response = {
+        status: "failure",
+        errors: errors.array()
+      };
+      res.json(response);
+      return;
+    } else {
+      Template.save(function(err) {
+        if (err) return;
+        const response = {
+          status: "success",
+          result: "User added successfully"
+        };
+        res.status(204).json(response);
+      });
+    }
+  }
+];
 
-exports.updateTemplate = function(req, res) {
-  res.send("Update Template");
-};
+exports.updateTemplate = [
+  body("name")
+    .isLength({ min: 3 })
+    .trim()
+    .withMessage("Name must have at least 3 characters.")
+    .isAlphanumeric()
+    .withMessage("Name has non-alphanumeric characters."),
+  body("description")
+    .optional()
+    .isLength({ min: 5 })
+    .trim()
+    .withMessage("Description must be specified.")
+    .isAlphanumeric()
+    .withMessage("Description has non-alphanumeric characters."),
+  sanitizeBody("code")
+    .trim()
+    .escape(),
+  sanitizeBody("name")
+    .trim()
+    .escape(),
+  sanitizeBody("description")
+    .trim()
+    .escape(),
+  function(req, res) {
+    const id = req.params.id;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const response = {
+        status: "failure",
+        errors: errors.array()
+      };
+      res.json(response);
+      return;
+    } else {
+      Template.findByIdAndUpdate(id, req.body, function(err, result) {
+        if (err) return;
+        const response = {
+          status: "success",
+          result
+        };
+        res.json(response);
+      });
+    }
+  }
+];
 
 exports.updateFavorites = function(req, res) {
   res.send("Keep favorite count");
