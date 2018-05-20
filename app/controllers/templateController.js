@@ -50,13 +50,18 @@ exports.createTemplate = [
       res.json(response);
       return;
     } else {
-      Template.save(function(err) {
+      const template = new Template({
+        name: req.body.name,
+        code: req.body.code,
+        description: req.body.description
+      });
+      template.save(function(err) {
         if (err) return;
         const response = {
           status: "success",
           result: "User added successfully"
         };
-        res.status(204).json(response);
+        res.status(201).json(response);
       });
     }
   }
@@ -107,6 +112,20 @@ exports.updateTemplate = [
     }
   }
 ];
+
+exports.deleteTemplate = function(req, res) {
+  const deleteId = {
+    _id: req.params.id
+  };
+  Template.deleteOne(deleteId, function(err) {
+    if (err) res.json(err);
+    const response = {
+      status: "success",
+      result: "Template has been deleted successfully"
+    };
+    res.json(202).json(response);
+  });
+};
 
 exports.updateFavorites = function(req, res) {
   res.send("Keep favorite count");
