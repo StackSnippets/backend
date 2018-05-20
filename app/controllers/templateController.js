@@ -38,7 +38,7 @@ exports.createTemplate = [
     .isLength({ min: 5 })
     .trim()
     .withMessage("Description must be specified.")
-    .isAlphanumeric()
+    .isString()
     .withMessage("Description has non-alphanumeric characters."),
   sanitizeBody("code")
     .trim()
@@ -78,6 +78,7 @@ exports.createTemplate = [
 
 exports.updateTemplate = [
   body("name")
+    .optional()
     .isLength({ min: 3 })
     .trim()
     .withMessage("Name must have at least 3 characters.")
@@ -88,7 +89,7 @@ exports.updateTemplate = [
     .isLength({ min: 5 })
     .trim()
     .withMessage("Description must be specified.")
-    .isAlphanumeric()
+    .isString()
     .withMessage("Description has non-alphanumeric characters."),
   sanitizeBody("code")
     .trim()
@@ -99,6 +100,7 @@ exports.updateTemplate = [
   sanitizeBody("description")
     .trim()
     .escape(),
+  sanitizeBody("base").toBoolean(),
   function(req, res) {
     const id = req.params.id;
     const errors = validationResult(req);
@@ -116,7 +118,7 @@ exports.updateTemplate = [
           status: HTTP_CODE.HTTP_SUCCESS,
           result
         };
-        res.json(response);
+        res.status(202).json(response);
       });
     }
   }
@@ -132,7 +134,7 @@ exports.deleteTemplate = function(req, res) {
       status: HTTP_CODE.HTTP_SUCCESS,
       result: "Template has been deleted successfully"
     };
-    res.status(202).json(response);
+    res.status(204).json(response);
   });
 };
 
