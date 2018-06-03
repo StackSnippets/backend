@@ -138,19 +138,35 @@ exports.deleteTemplate = function(req, res) {
   });
 };
 
-exports.updateFavorites = function(req, res) {
-  const id = req.params.id;
-  const body = {
-    $inc: {
-      favorited_by: req.body.number
+exports.updateFavorites = [
+  body("number")
+    .isNumeric()
+    .isIn([1, -1])
+    .withMessage("Provide a valid number"),
+  function(req, res) {
+    const id = req.params.id;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const response = {
+        status: HTTP_CODE.HTTP_FAILURE,
+        errors: errors.array()
+      };
+      res.json(response);
+      return;
+    } else {
+      const body = {
+        $inc: {
+          favorited_by: req.body.number
+        }
+      };
+      Template.findOneAndUpdate(id, body, { new: true }, function(err, result) {
+        if (err) res.json(err);
+        const response = {
+          status: HTTP_CODE.HTTP_SUCCESS,
+          result
+        };
+        res.status(202).json(response);
+      });
     }
-  };
-  Template.findOneAndUpdate(id, body, { new: true }, function(err, result) {
-    if (err) res.json(err);
-    const response = {
-      status: HTTP_CODE.HTTP_SUCCESS,
-      result
-    };
-    res.status(202).json(response);
-  });
-};
+  }
+];
