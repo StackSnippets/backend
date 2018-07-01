@@ -68,7 +68,7 @@ exports.createTemplate = [
         if (err) return;
         const response = {
           status: HTTP_CODE.HTTP_SUCCESS,
-          result: "User added successfully"
+          result: "Template added successfully"
         };
         res.status(201).json(response);
       });
