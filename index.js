@@ -5,7 +5,8 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const logger = require("morgan");
 const cors = require("cors");
-const Database = require("./connection");
+
+const Database = require("./config/database");
 const routes = require("./app/routes");
 
 dotenv.load({ path: ".env" });
