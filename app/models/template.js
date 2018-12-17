@@ -8,6 +8,7 @@ const Template = new Schema(
     code: { type: String, required: true },
     base: { type: Boolean, default: false },
     favorited_by: { type: Number, default: 0 },
+    used_by: { type: Number, default: 0 },
     description: String,
   },
   {
