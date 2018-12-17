@@ -9,6 +9,7 @@ const Template = new Schema(
     base: { type: Boolean, default: false },
     favorited_by: { type: Number, default: 0 },
     used_by: { type: Number, default: 0 },
+    created_by: { type: Schema.Types.ObjectId, ref: "User" },
     description: String,
   },
   {
