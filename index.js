@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const logger = require("morgan");
 const cors = require("cors");
-const passport = require("passport");
 
 const Database = require("./config/database");
 const routes = require("./app/routes");
@@ -23,8 +22,6 @@ app.use(bodyParser.json());
 app.use(cors());
 
 Database.connect();
-
-require("./config/passport")(passport);
 
 app.use("/api", routes);
 
