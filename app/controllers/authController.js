@@ -1,17 +1,10 @@
-const axios = require("axios");
 const HTTP_CODE = require("../../constants/httpStatus");
+const GithubAuth = require("../utils/GithubAuth");
+const AuthToken = require("../utils/AuthToken");
 
 exports.login = async function(req, res) {
   const reqToken = req.body.token;
-  const clientID = process.env.GITHUB_CLIENT_ID;
-  const clientSecret = process.env.GITHUB_CLIENT_SECRET;
-  const response = await axios({
-    method: "POST",
-    headers: {
-      accept: "application/json",
-    },
-    url: `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${clientSecret}&code=${reqToken}`,
-  });
+  const response = await GithubAuth.verifyResponseToken(reqToken);
   if (response.data.error) {
     res.json({
       status: HTTP_CODE.HTTP_FAILURE,
@@ -22,6 +15,27 @@ exports.login = async function(req, res) {
     });
   } else {
     const accessToken = response.data.access_token;
+    try {
+      const profileResponse = await GithubAuth.getProfile(accessToken);
+      const data = profileResponse.data;
+      const profile = {
+        name: data.name,
+        avatar: data.avatar_url,
+        url: data.url,
+        username: data.login,
+        email: data.email,
+      };
+      const jsonWebToken = AuthToken.generate(profile);
+      res.json({
+        status: HTTP_CODE.HTTP_SUCCESS,
+        data: {
+          token: jsonWebToken,
+          profile: profile,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 };
 
